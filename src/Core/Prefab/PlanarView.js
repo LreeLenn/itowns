@@ -179,10 +179,9 @@ PlanarView.prototype.readDepthBuffer = function readDepthBuffer(x, y, width, hei
 
 const matrix = new THREE.Matrix4();
 const screen = new THREE.Vector2();
-const pickWorldPosition = new THREE.Vector3();
 const ray = new THREE.Ray();
 const direction = new THREE.Vector3();
-PlanarView.prototype.getPickingPositionFromDepth = function getPickingPositionFromDepth(mouse) {
+PlanarView.prototype.getPickingPositionFromDepth = function getPickingPositionFromDepth(mouse, target = new THREE.Vector3()) {
     const l = this.mainLoop;
     const viewPaused = l.scheduler.commandsWaitingExecutionCount() == 0 && l.renderingState == RENDERING_PAUSED;
     const g = l.gfxEngine;
@@ -228,14 +227,14 @@ PlanarView.prototype.getPickingPositionFromDepth = function getPickingPositionFr
     const orthoZ = g.depthBufferRGBAValueToOrthoZ(buffer, camera);
     const length = orthoZ / Math.cos(angle);
 
-    pickWorldPosition.addVectors(camera.position, ray.direction.setLength(length));
+    target.addVectors(camera.position, ray.direction.setLength(length));
 
     camera.layers.mask = prev;
 
-    if (pickWorldPosition.length() > 10000000)
+    if (target.length() > 10000000)
         { return undefined; }
 
-    return pickWorldPosition;
+    return target;
 };
 
 export default PlanarView;
