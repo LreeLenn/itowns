@@ -1,0 +1,66 @@
+<html>
+    <head>
+        <title>Itowns - Globe</title>
+
+        <style type="text/css">
+            html {
+                height: 100%;
+            }
+
+            body {
+                margin: 0;
+                overflow:hidden;
+                height:100%;
+            }
+
+            #viewerDiv {
+                position: absolute;
+                left: 0%;
+                width: 50%;
+                height: 100%;
+            }
+            #planarDiv {
+                position: absolute;
+                left: 50%;
+                width: 50%;
+                height: 100%;
+            }
+
+            #menuDiv {
+                position: absolute;
+                top:0px;
+                margin-left: 0px;
+            }
+
+            @media (max-width: 600px) {
+                #menuDiv {
+                    display: none;
+                }
+            }
+        </style>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" type="text/css" href="css/loading_screen.css">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="js/GUI/dat.gui/dat.gui.min.js"></script>
+    </head>
+    <body>
+        <div id="viewerDiv"></div>
+        <div id="planarDiv"></div>
+        <script src="js/GUI/GuiTools.js"></script>
+        <script src="../dist/itowns.js"></script>
+        <script src="../dist/debug.js"></script>
+        <script type="text/javascript">
+            var renderer;
+            var exports = {};
+            // Define projection that we will use (taken from https://epsg.io/3946, Proj4js section)
+            itowns.proj4.defs('EPSG:3946',
+                '+proj=lcc +lat_1=45.25 +lat_2=46.75 +lat_0=46 +lon_0=3 +x_0=1700000 +y_0=5200000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs');
+        </script>
+        <script src="syncCameras.js"></script>
+        <script type="text/javascript">
+            const d = new debug.Debug(globeView, menuGlobe.gui);
+            debug.createTileDebugUI(menuGlobe.gui, globeView, globeView.wgs84TileLayer, d);
+        </script>
+    </body>
+</html>
