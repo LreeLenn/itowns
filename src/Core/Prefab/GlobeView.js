@@ -280,6 +280,9 @@ GlobeView.prototype = Object.create(View.prototype);
 GlobeView.prototype.constructor = GlobeView;
 
 GlobeView.prototype.addLayer = function addLayer(layer) {
+    if (!layer) {
+        return;
+    }
     if (layer.type == 'color') {
         const colorLayerCount = this.getLayers(l => l.type === 'color').length;
         layer.sequence = colorLayerCount;
