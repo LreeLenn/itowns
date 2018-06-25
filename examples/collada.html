@@ -89,7 +89,7 @@
 
             // Listen for globe full initialisation event
             globeView.addEventListener(itowns.GLOBE_VIEW_EVENTS.GLOBE_INITIALIZED, function init() {
-                globeView.controls.setOrbitalPosition({ heading: 180, tilt: 60 });
+                globeView.controls.lookAtCoordinateAdvanced({ heading: 180, tilt: 60 });
             });
 
             var script = document.createElement('script');
