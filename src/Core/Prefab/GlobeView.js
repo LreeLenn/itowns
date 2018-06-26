@@ -143,6 +143,18 @@ export function createGlobeLayer(id, options) {
         return false;
     }
 
+    wgs84TileLayer.countColorLayersTextures = (layerColors, layer) => {
+        layerColors.push(layer);
+        let occupancy = 0;
+        for (const layer of layerColors) {
+            const projection = layer.projection || layer.options.projection;
+            // 'EPSG:3857' occupies the maximum 3 textures on tiles
+            // 'EPSG:4326' occupies 1 textures on tile
+            occupancy += projection == 'EPSG:3857' ? 3 : 1;
+        }
+        return occupancy;
+    };
+
     wgs84TileLayer.update = processTiledGeometryNode(globeCulling(2), subdivision);
     wgs84TileLayer.builder = new BuilderEllipsoidTile();
     wgs84TileLayer.onTileCreated = nodeInitFn;
@@ -333,6 +345,8 @@ GlobeView.prototype.removeLayer = function removeImageryLayer(layerId) {
             type: GLOBE_VIEW_EVENTS.LAYER_REMOVED,
             layerId,
         });
+
+        this.wgs84TileLayer.colorLayersCount -= this.wgs84TileLayer.getIncreColorlayer(layer);
 
         return true;
     } else {

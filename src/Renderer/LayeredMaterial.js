@@ -74,11 +74,18 @@ var moveElementsArraySafe = function moveElementsArraySafe(array,index, howMany,
 };
 /* eslint-enable */
 
+const maxSamplersColorCount = 15;
+const samplersElevationCount = 1;
+
+export function getMaxColorSamplerUnitsCount() {
+    const maxSamplerUnitsCount = Capabilities.getMaxTextureUnitsCount();
+    return Math.min(maxSamplerUnitsCount - samplersElevationCount, maxSamplersColorCount);
+}
+
 const LayeredMaterial = function LayeredMaterial(options) {
     THREE.RawShaderMaterial.call(this);
 
-    const maxTexturesUnits = Capabilities.getMaxTextureUnitsCount();
-    const nbSamplers = Math.min(maxTexturesUnits - 1, 16 - 1);
+    const nbSamplers = getMaxColorSamplerUnitsCount();
     this.vertexShader = TileVS;
 
     this.fragmentShaderHeader = `${PrecisionQualifier}\nconst int   TEX_UNITS   = ${nbSamplers.toString()};\n`;
