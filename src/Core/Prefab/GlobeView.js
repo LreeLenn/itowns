@@ -346,8 +346,6 @@ GlobeView.prototype.removeLayer = function removeImageryLayer(layerId) {
             layerId,
         });
 
-        this.wgs84TileLayer.colorLayersCount -= this.wgs84TileLayer.getIncreColorlayer(layer);
-
         return true;
     } else {
         throw new Error(`${layerId} isn't color layer`);
