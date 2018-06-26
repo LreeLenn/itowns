@@ -32,7 +32,13 @@ function preprocessDataLayer(layer) {
         options.version = options.version || '1.0.0';
         options.tileMatrixSet = options.tileMatrixSet || 'WGS84';
         options.style = options.style || 'normal';
-        options.projection = options.projection || 'EPSG:3857';
+        if (!options.projection) {
+            if (options.tileMatrixSet === 'WGS84' || options.tileMatrixSet === 'WGS84G') {
+                options.projection = 'EPSG:4326';
+            } else {
+                options.projection = 'EPSG:3857';
+            }
+        }
         let newBaseUrl = `${layer.url}` +
             `?LAYER=${options.name}` +
             `&FORMAT=${layer.format}` +
